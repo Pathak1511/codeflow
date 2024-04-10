@@ -75,8 +75,8 @@ function Index() {
   };
 
   return (
-    <div className="relative flex justify-center items-center flex-col pb-4 sm:w-[96vw]">
-      <div className=" flex justify-between w-[100%] h-[40px] my-4 cursor-pointer sm:flex-row sm:h-[40px] dm:flex-col dm:h-[80px] dm:px-4 ">
+    <div className="relative flex justify-center items-center flex-col pb-4 dm:w-[100vw] sm:w-[96vw] dm:px-2">
+      <div className=" flex justify-between w-[100%] h-[40px] my-4 cursor-pointer sm:flex-row sm:h-[40px] dm:flex-col dm:h-[80px] dm:px-2">
         <div className="flex gap-4 justify-start ">
           <img src="/main-logo.png" className="w-[40px] h-[40px]" />
           <h2 className="text-2xl font-bold">CodeFlow</h2>
