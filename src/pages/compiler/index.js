@@ -58,17 +58,27 @@ function Index() {
     const Output = await axios
       .request(config)
       .then((response) => {
-        const result = JSON.parse(
-          JSON.stringify(response?.data?.output)
-        ).replace(/\n/g, "<br>");
-        setOutput(result);
+        const output = JSON.stringify(response?.data?.output);
+        if (output === undefined) {
+          setOutput("failed to fetch result");
+        } else {
+          const result = JSON.parse(
+            JSON.stringify(response?.data?.output)
+          ).replace(/\n/g, "<br>");
+          setOutput(result);
+        }
         setoutputSubject(["Success", "#2e7d32"]);
       })
       .catch((error) => {
-        const err = JSON.parse(
-          JSON.stringify(error.response?.data?.output)
-        ).replace(/\n/g, "<br>");
-        setOutput(err);
+        const err = JSON.stringify(error.response?.data?.output);
+        if (error === undefined) {
+          setOutput("failed to fetch");
+        } else {
+          const err = JSON.parse(
+            JSON.stringify(error.response?.data?.output)
+          ).replace(/\n/g, "<br>");
+          setOutput(err);
+        }
         setoutputSubject(["Error", "#ff3333"]);
       });
     setLoading(false);
