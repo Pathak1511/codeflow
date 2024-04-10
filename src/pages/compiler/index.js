@@ -2,8 +2,7 @@ import React, { useState, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import theme from "../api";
 import Dropdown from "@/components/Dropdown";
-import axios from "axios";
-import Exec from "../api/Exec";
+import Exec from "pat-exec";
 function Index() {
   const [selectLanguage, setSelectLanguage] = useState("javascript");
   const [defaultCode, setDefaultCode] = useState("console.log('Hello World')");
