@@ -3,7 +3,7 @@ import Editor from "@monaco-editor/react";
 import theme from "../api";
 import Dropdown from "@/components/Dropdown";
 import axios from "axios";
-
+import Exec from "../api/Exec";
 function Index() {
   const [selectLanguage, setSelectLanguage] = useState("javascript");
   const [defaultCode, setDefaultCode] = useState("console.log('Hello World')");
@@ -33,55 +33,34 @@ function Index() {
     });
   }
 
-  function showValue() {
+  const showValue = () => {
     onSendCode(editorRef.current.getValue());
-  }
+  };
 
-  const onSendCode = async (Currentcode) => {
+  const onSendCode = (Currentcode) => {
     setLoading(true);
-    let data = JSON.stringify({
+    let data = {
       language: selectLanguage,
       code: Currentcode,
       input: args,
-    });
-
-    let config = {
-      method: "post",
-      maxBodyLength: Infinity,
-      url: "https:exec-execution-dev.koyeb.app/run",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
     };
 
-    const Output = await axios
-      .request(config)
-      .then((response) => {
-        const output = JSON.stringify(response?.data?.output);
-        if (output === undefined) {
-          setOutput("failed to fetch result");
-        } else {
-          const result = JSON.parse(
-            JSON.stringify(response?.data?.output)
-          ).replace(/\n/g, "<br>");
-          setOutput(result);
-        }
-        setoutputSubject(["Success", "#2e7d32"]);
-      })
-      .catch((error) => {
-        const err = JSON.stringify(error.response?.data?.output);
-        if (error === undefined) {
-          setOutput("failed to fetch");
-        } else {
-          const err = JSON.parse(
-            JSON.stringify(error.response?.data?.output)
-          ).replace(/\n/g, "<br>");
-          setOutput(err);
-        }
+    Exec(data.input, data.language, data.code, (error, data) => {
+      if (error) {
+        setOutput("Unknown error occured");
         setoutputSubject(["Error", "#ff3333"]);
-      });
-    setLoading(false);
+      } else {
+        const output = JSON.stringify(JSON.parse(data).output);
+        const result = JSON.parse(output).replace(/\n/g, "<br>");
+        if (JSON.parse(data).hasOwnProperty("error")) {
+          setoutputSubject(["Error", "#ff3333"]);
+        } else {
+          setoutputSubject(["Success", "#2e7d32"]);
+        }
+        setOutput(result);
+      }
+      setLoading(false);
+    });
   };
 
   return (
@@ -93,7 +72,9 @@ function Index() {
         </div>
         <div className="flex gap-8 justify-center items-center dm:gap-4 dm:justify-start">
           <button
-            onClick={showValue}
+            onClick={() => {
+              showValue();
+            }}
             className="w-[120px] h-[100%] bg-green-500 hover:bg-green-700 text-white rounded-lg"
           >
             Run
@@ -161,7 +142,7 @@ function Index() {
               onChange={(e) => setargs(e.target.value)}
               placeholder="Input data here"
               className="w-[100%] h-[100%] placeholder:text-gray-100 bg-[#222] outline-none items-left px-4"
-              style={{ "text-align": "left" }}
+              style={{ textAlign: "left" }}
             />
           </div>
         </div>
