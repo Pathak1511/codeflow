@@ -60,6 +60,10 @@ function Index() {
         setOutput(result);
       }
       setLoading(false);
+      const outputContainer = document.getElementById("outputContainer");
+      if (outputContainer) {
+        outputContainer.scrollIntoView({ behavior: "smooth" });
+      }
     });
   };
 
@@ -94,7 +98,10 @@ function Index() {
           onMount={handleEditorDidMount}
           className="border-2 border-black md:w-[100vw] sm:w-[96vw] dm:w-[80vw] dm:h-[80vh] "
         />
-        <div className="h-[80vh] md:w-[50%] sm:w-[100%] dm:w-[100%]">
+        <div
+          id="outputContainer"
+          className="h-[80vh] md:w-[50%] sm:w-[100%] dm:w-[100%]"
+        >
           {/* Output */}
           <div className="h-[50%] w-[100%] bg-[#222] border-2 border-black flex flex-col">
             <div className="flex justify-between items-center border-2 border-[#333]">
