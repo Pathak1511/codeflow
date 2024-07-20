@@ -147,7 +147,7 @@ function Index() {
             <textarea
               onChange={(e) => setargs(e.target.value)}
               placeholder="Input data here"
-              className="w-[100%] h-[100%] placeholder:text-gray-100 bg-[#222] outline-none items-left px-4"
+              className="w-[100%] h-[100%] placeholder:text-gray-500 bg-[#222] outline-none items-left px-4"
               style={{ textAlign: "left" }}
             />
           </div>
