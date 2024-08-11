@@ -1,8 +1,9 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import theme from "../api";
 import Dropdown from "@/components/Dropdown";
-import Exec from "pat-exec";
+import Exec from "../api/Exec";
+import { useRouter } from "next/router";
 function Index() {
   const [selectLanguage, setSelectLanguage] = useState("javascript");
   const [defaultCode, setDefaultCode] = useState("console.log('Hello World')");
@@ -10,6 +11,7 @@ function Index() {
   const [loading, setLoading] = useState(false);
   const [output, setOutput] = useState("");
   const [outputSubject, setoutputSubject] = useState(["Success", "#2e7d32"]);
+  const router = useRouter();
 
   const handleSelectLanguage = (value, code) => {
     setSelectLanguage(value);
@@ -21,7 +23,6 @@ function Index() {
   const editorRef = useRef(null);
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
-    const model = editorRef.current.getModel();
     monaco.editor.defineTheme("customTheme", theme);
     monaco.editor.setTheme("customTheme");
     editorRef.current.defaultLanguage = selectLanguage;
@@ -69,16 +70,21 @@ function Index() {
   return (
     <div className="relative flex justify-center items-center flex-col pb-4 dm:w-[100vw] sm:w-[96vw] dm:px-2">
       <div className=" flex justify-between w-[100%] h-[40px] my-4 cursor-pointer sm:flex-row sm:h-[40px] dm:flex-col dm:h-[80px] dm:px-2">
-        <div className="flex gap-4 justify-start ">
+        <div
+          className="flex gap-4 justify-start "
+          onClick={() => router.push("/")}
+        >
           <img src="/main-logo.png" className="w-[40px] h-[40px]" />
-          <h2 className="text-2xl font-bold">CodeFlow</h2>
+          <h2 className="text-2xl font-bold">CodeFlow Playground</h2>
         </div>
         <div className="flex gap-8 justify-center items-center dm:gap-4 dm:justify-start">
           <button
             onClick={() => {
-              showValue();
+              loading ? "" : showValue();
             }}
-            className="w-[120px] h-[100%] bg-green-500 hover:bg-green-700 text-white rounded-lg"
+            className={`w-[120px] h-[100%] bg-green-500 hover:bg-green-700 text-white rounded-lg ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
             Run
           </button>
