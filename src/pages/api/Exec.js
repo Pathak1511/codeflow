@@ -5,9 +5,9 @@ function Exec(input, language, code, callback) {
   const requestData = JSON.stringify({ input, language, code });
   // Set up the request options
   const options = {
-    hostname: "exec-env.onrender.com",
+    hostname: "exec-execution-dev.koyeb.app",
     port: 443,
-    path: "/execute",
+    path: "/run",
     method: "POST",
     headers: {
       "Content-Type": "application/json",
